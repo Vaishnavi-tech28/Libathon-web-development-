@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #293eb8;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar .header {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .nav-bar ul {
+            list-style: none;
+            padding: 0;
+            flex-grow: 1;
+        }
+        .nav-bar ul li {
+            margin: 10px 0;
+        }
+        .nav-bar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            padding: 10px;
+            transition: background 0.3s;
+        }
+        .nav-bar ul li a:hover {
+            background: #1a2e8e;
+        }
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+            width: 100%;
+        }
+        h2 {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="header">Student Page</div>
+        <div class="nav-bar">
+            <ul>
+                <li><a onclick="loadPage('home')">Home</a></li>
+                <li><a onclick="loadPage('eresources')">E-Resources</a></li>
+                <li><a onclick="loadPage('borrow_return')">How to Borrow and Return</a></li>
+                <li><a onclick="loadPage('rules')">Rules and Regulation</a></li>
+                <li><a onclick="loadPage('books_location')">Where the Books Are</a></li>
+                <li><a onclick="loadPage('timings')">Timings</a></li>
+                <li><a onclick="loadPage('faqs')">FAQs</a></li>
+                <li><a onclick="loadPage('employee_list')">Employee Lists</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content">
+        <div id="student-data">
+            <h2>Welcome to the Student Dashboard</h2>
+            <p>Select an option from the navigation.</p>
+        </div>
+    </div>
+
+    <script>
+        function loadPage(page) {
+            const content = document.getElementById("student-data");
+            let htmlContent = "";
+
+            switch (page) {
+                case "home":
+                    htmlContent = `<h2>Home Page</h2><p>Welcome to the student dashboard.</p>`;
+                    break;
+                case "eresources":
+                    htmlContent = `<h2>E-Resources</h2><p>List of digital resources available.</p>`;
+                    break;
+                case "borrow_return":
+                    htmlContent = `<h2>How to Borrow and Return</h2><p>Instructions on borrowing and returning books.</p>`;
+                    break;
+                case "rules":
+                    htmlContent = `<h2>Rules and Regulation</h2><p>Library rules and policies.</p>`;
+                    break;
+                case "books_location":
+                    htmlContent = `<h2>Where the Books Are</h2><p>Information about book locations.</p>`;
+                    break;
+                case "timings":
+                    htmlContent = `<h2>Timings</h2><p>Library hours and schedules.</p>`;
+                    break;
+                case "faqs":
+                    htmlContent = `<h2>FAQs</h2><p>Frequently asked questions.</p>`;
+                    break;
+                case "employee_list":
+                    htmlContent = `<h2>Employee Lists</h2><p>Details about library employees.</p>`;
+                    break;
+                default:
+                    htmlContent = `<h2>Welcome</h2><p>Select an option from the navigation.</p>`;
+            }
+
+            content.innerHTML = htmlContent;
+        }
+
+        fetch('http://localhost:3000/data')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const dataContainer = document.getElementById('student-data');
+                const dataList = document.createElement('ul');
+
+                data.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = item;
+                    dataList.appendChild(listItem);
+                });
+
+                dataContainer.appendChild(dataList);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    </script>
+</body>
+</html>
